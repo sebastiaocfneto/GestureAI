@@ -1,3 +1,5 @@
+import math
+
 import cv2
 from cvzone.HandTrackingModule import HandDetector
 
@@ -55,6 +57,15 @@ letras = {
 
 }
 
+
+def calcDistX(point1, point2):
+    return point1[0] - point2[0]
+
+
+def calcDistY(point1, point2):
+    return point1[1] - point2[1]
+
+
 while True:
     success, img = cap.read()
 
@@ -62,8 +73,11 @@ while True:
     hands, img = detector.findHands(img)
     # confere se há mãos na tela
     if len(hands) >= 1:
+
         for letra, valor in letras.items():
-            if detector.fingersUp(hands[0]) == valor:
+            distX = calcDistX(hands[0][dedos[valor[1]]], hands[0]['center'])
+            distY = calcDistY(hands[0][dedos[valor[1]]], hands[0]['center'])
+            if detector.fingersUp(hands[0]) == valor[0]:
                 print(letra)
 
     # espelhando a imagem horizontalmente para melhor localização
