@@ -96,6 +96,13 @@ while True:
                 if fingers == valor[0] and distX >= valor[2] and distY >= valor[3] and mov_x >= valor[4] and mov_y >= valor[5]:
                     print(f"Letra detectada: {letra}")
 
+                    img1 = cv2.imread(f'alfabeto/{letra.lower()}.png')
+                    h1, w1, _ = img1.shape
+                    newH, newW = (h1 + 50 // 2) * 2, (w1 + 50 // 2) * 2
+                    img1 = cv2.resize(img1, (newW, newH))
+                    img1 = cv2.flip(img1, 1)
+                    img[256:544, 240:488] = img1
+
     # espelhando a imagem horizontalmente para melhor localização
     img = cv2.flip(img, 1)
 
