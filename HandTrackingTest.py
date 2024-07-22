@@ -26,16 +26,27 @@ letras = {
 
 while True:
     success, img = cap.read()
-
+    current = None
     # detecção das mãoes
     hands, img = detector.findHands(img)
     # confere se há mãos na tela
     if len(hands) >= 1:
         for letra, valor in letras.items():
             if detector.fingersUp(hands[0]) == valor:
+                current = letra
                 print(letra)
 
-    # espelhando a imagem horizontalmente para melhor localização
+    # mostrando a letra como imagem
+
+        # redefine a imagem com a nova escala
+    if current:
+        img1 = cv2.imread(f'alfabeto/{current.lower()}.png')
+        h1, w1, _ = img1.shape
+        newH, newW = (h1 + 50 // 2) * 2, (w1 + 50 // 2) * 2
+        img1 = cv2.resize(img1, (newW, newH))
+        img1 = cv2.flip(img1, 1)
+        img[256:544, 240:488] = img1
+
     img = cv2.flip(img, 1)
 
     cv2.imshow("Image", img)
